@@ -36,6 +36,30 @@ int val(int id, int size) {
     return ((total * multiple) % size);
 }
 
+bool add(node* table[], int hIndex) {
+    
+    
+    if (table[hIndex] == NULL) {
+        node* temp = new Node();
+        temp -> student = student;
+        table[hIndex] = temp;
+        return true;
+    }
+    
+    
+    node* temp = table[hIndex];
+    int count = 0;
+    while(temp!= NULL) {
+        temp = temp->next;
+        count++;
+    }
+    
+    if(count > 3) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 int main() {
     char input[50];
