@@ -36,7 +36,7 @@ int val(int id, int size) {
     return ((total * multiple) % size);
 }
 
-bool add(node* table[], int hIndex) {
+bool add(node* table[], int hIndex, student* student) {
     
     
     if (table[hIndex] == NULL) {
@@ -60,6 +60,9 @@ bool add(node* table[], int hIndex) {
         return true;
     }
 }
+
+
+
 
 int main() {
     char input[50];
