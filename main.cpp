@@ -83,6 +83,23 @@ void re(node* hash[] node* old[], int &size) {
     size = resize;
 }
 
+void print(node* hash[]; int size) {
+    node* temp;
+    for(int i = 0; i < size; i++) {
+        if(hash[i] != NULL) {
+            temp = hash[i];
+            while(temp != NULL) {
+                cout << "First name: " << temp->student->firstName << endl;
+                cout << "Last name: "  << temp->student->lastName << endl;
+                cout << "Gpa: "  << fixed << setPrecision(2)<< temp->student->gpa << endl;
+                cout << "ID: "  << temp->student->id << endl;
+                temp = temp->next;
+            }
+        }
+    }
+    
+}
+
 
 
 
