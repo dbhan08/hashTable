@@ -3,6 +3,7 @@
 #include <vector>
 #include <iomanip>
 #include <cstdlib>
+#include <cmath>
 
 using namespace std;
 
@@ -12,8 +13,8 @@ using namespace std;
 
 
 struct student {
-    char firstName[80];
-    char lastName[80];
+    char* firstName;
+    char* lastName;
     int id;
     float gpa;
 };
@@ -33,14 +34,16 @@ int val(int id, int size) {
     }
     
     int multiple = trunc(size/10);
-    return ((total * multiple) % size);
+    int val = (value*multiple) % size;
+    return val;
 }
+
 
 bool add(node* table[], int hIndex, student* student) {
     
     
     if (table[hIndex] == NULL) {
-        node* temp = new Node();
+        node* temp = new node();
         temp -> student = student;
         table[hIndex] = temp;
         return true;
@@ -61,15 +64,15 @@ bool add(node* table[], int hIndex, student* student) {
     }
 }
 
-void re(node* hash[] node* old[], int &size) {
+void re(node* hash[], node* old[], int &size) {
     
     for (int i = 0; i < (size * 2); i++) {
         hash[i] = NULL;
     }
     int resize = size*2;
     for(int i = 0; i < size; i ++) {
-        if(old[i] != NUL) {
-            node temp = old[i];
+        if(old[i] != NULL) {
+            node* temp = old[i];
             while(temp != NULL) {
                 student* stud = temp->student;
                 int newInd = val(stud->id,resize);
@@ -83,7 +86,7 @@ void re(node* hash[] node* old[], int &size) {
     size = resize;
 }
 
-void print(node* hash[]; int size) {
+void print(node* hash[], int size) {
     node* temp;
     for(int i = 0; i < size; i++) {
         if(hash[i] != NULL) {
@@ -91,7 +94,7 @@ void print(node* hash[]; int size) {
             while(temp != NULL) {
                 cout << "First name: " << temp->student->firstName << endl;
                 cout << "Last name: "  << temp->student->lastName << endl;
-                cout << "Gpa: "  << fixed << setPrecision(2)<< temp->student->gpa << endl;
+                cout << "Gpa: "  << fixed << setprecision(2)<< temp->student->gpa << endl;
                 cout << "ID: "  << temp->student->id << endl;
                 temp = temp->next;
             }
@@ -104,6 +107,7 @@ void print(node* hash[]; int size) {
 
 
 int main() {
+    int size = 100;
     char input[50];
     node** table = new node*[100];
     vector <int> IDs;
@@ -115,45 +119,47 @@ int main() {
     bool run = true;
     
     while(run) {
+        
         cout << "Would you like to generate,add, print, delete, or quit?" << endl;
-        iff (strcmp(input, "ADD") == 0) {
-            int ID;
-            float GPA;
-            char fName;
-            char lName;
+        cin.getline(input,50);
+        if (strcmp(input, "ADD") == 0) {
+            int id;
+            float gpa;
+            char* fName = new char();
+            char* lName = new char();
             cout << "Firstname? \n";
             cin.getline(fName, 20);
             cout << "Lastname? \n";
             cin.getline(lName, 20);
             cout << "ID? \n";
-            cin >> ID;
+            cin >> id;
             cin.get();
             cout << "GPA? \n";
-            cin >> GPA;
+            cin >> gpa;
             cin.get();
             //Checks to see if duplicate, if not, adds it
             bool there = false;
             vector<int>:: iterator i;
-            for ( i= IDs.begin(); i != IDs.end(); I++) {
-                if((*i) == ID) {
+            for ( i= IDs.begin(); i != IDs.end(); i++) {
+                if((*i) == id) {
                     there = true;
                 }
             }
             if (there == false) {
-                IDs.push_back(ID);
+                IDs.push_back(id);
                 //Creates new student
                 student* temp = new student();
-                temp -> fName = fName;
-                temp -> lName = lName;
-                temp -> ID = ID;
-                temp -> GPA = GPA;
-                int index = HVALUE(ID, size);
-                bool valid = ADD(hashTable, index, temp);
+                temp -> firstName = fName;
+                temp -> lastName = lName;
+                temp -> id = id;
+                temp -> gpa = gpa;
+                int index = val(id, size);
+                bool valid = add(table, index, temp);
                 if (valid == false) {
-                    Node** newHash = new Node*[size*2];
-                    REHASH(newHash, hashTable, size);
-                    delete [] hashTable;
-                    hashTable = newHash;
+                    node** newHash = new node*[size*2];
+                    re(newHash, table, size);
+                    delete [] table;
+                    table = newHash;
                 }
             }
             else {
@@ -162,6 +168,7 @@ int main() {
         }
         //Random student generation
         else if (strcmp(input, "GENERATE") == 0) {
+            /*
             vector<char*> fNames;
             vector<char*> lNames;
             ifstream inFile;
@@ -231,23 +238,26 @@ int main() {
                     hashTable = newHash; 
                 }
             }
+             */
         }
         else if (strcmp(input, "PRINT") == 0) {
-            PRINT(hashTable, size); 
+         print(table, size);
         }
         else if (strcmp(input, "DELETE") == 0) {
+            /*
             int sID;
             cout << "Enter Student's ID \n";
             cin >> sID;
             cin.get();
             IDs.push_back(sID);
             DELETE(hashTable, sID, size); 
+             */
         }
         else if (strcmp(input, "EXIT") == 0) {
             exit(0); 
         }
         else {
-            cout << "Valid Input Plz \n"; 
+            cout << "Give a valid input";
         }
     }
     
