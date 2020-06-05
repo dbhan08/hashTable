@@ -25,6 +25,17 @@ struct node {
 };
 
 
+int val(int id, int size) {
+    int value = 0;
+    while(id!= 0) {
+        value += id%10;
+        id =id/10;
+    }
+    
+    int multiple = trunc(size/10);
+    return ((total * multiple) % size);
+}
+
 
 int main() {
     char input[50];
