@@ -61,6 +61,28 @@ bool add(node* table[], int hIndex, student* student) {
     }
 }
 
+void re(node* hash[] node* old[], int &size) {
+    
+    for (int i = 0; i < (size * 2); i++) {
+        hash[i] = NULL;
+    }
+    int resize = size*2;
+    for(int i = 0; i < size; i ++) {
+        if(old[i] != NUL) {
+            node temp = old[i];
+            while(temp != NULL) {
+                student* stud = temp->student;
+                int newInd = val(stud->id,resize);
+                add(hash,newInd,stud);
+                
+                temp = temp->next;
+            }
+        }
+    }
+    
+    size = resize;
+}
+
 
 
 
