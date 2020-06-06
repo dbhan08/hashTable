@@ -127,7 +127,8 @@ void remove(node* hash[], int size, int id) {
     }
 
 
-void randomGen() {
+void randomGen(node* table[], vector<int> &IDs, int &size) {
+    ifstream inFile;
     vector<char*> firstNames;
     vector<char*> lastNames;
     char* input = new char[10000];
@@ -135,13 +136,12 @@ void randomGen() {
      char secondInput[10000];
     char* temp;
     char* temp2;
-    ifstream file;
     
     int amount;
     cout << "How many students would you like to add?" << endl;
     cin >> amount;
     cin.get();
-    infile.open(first);
+    inFile.open(first);
     inFile.getline(firstInput, 1000);
     temp = strtok(firstInput, " ");
     
@@ -149,11 +149,11 @@ void randomGen() {
         firstNames.push_back(temp);
         temp = strtok(NULL, " ");
     }
-    infile.close();
+    inFile.close();
     
     
     inFile.open(last);
-    inFile.getline(secondINput, 1000);
+    inFile.getline(secondInput, 1000);
     temp2 = strtok(secondInput, " ");
     while (temp2 != NULL) {
         lastNames.push_back(temp2);
@@ -166,16 +166,39 @@ void randomGen() {
         char* lastName = new char();
         int fIndex = rand() % (firstNames.size()+1);
         int lIndex = rand() % (firstNames.size() +1);
-        float randGPA = 0;
+         float random = (((float) rand()) / (float) RAND_MAX)*4; // From https://stackoverflow.com/questions/5289613/generate-random-float-between-two-floats/5289624
         
-        firstName = firstNames.at(fINdex-1);
-        firstName = lasttNames.at(lINdex-1);
-        
+        firstName = firstNames.at(fIndex-1);
+        firstName = lastNames.at(lIndex-1);
+        int id = 0;
+        vector<int>::iterator j;
+        for (j = IDs.begin(); j != IDs.end();j++) {
+            if((*j) >id ) {
+                id = (*j);
+            }
+        }
+        IDs.push_back(id + 2);
+        student* stud = new student();
+        stud->firstName = firstName;
+        stud->lastName = lastName;
+        stud->gpa = random;
+        stud->id = id+2;
+        int ind = val(id+2,size);
+        bool valid = add(table, id, stud);
+        if (valid == false) {
+            node** newHash = new node*[size*2];
+            re(newHash, table, size);
+            delete [] table;
+            table = newHash;
+        }
     }
     
     
-}
-        
+    }
+
+
+
+
 
 
 
@@ -195,8 +218,9 @@ int main() {
     while(run) {
         
         cout << "Would you like to generate,add, print, delete, or quit?" << endl;
+        cout << "To Add enter 1, to generate enter 2, to print enter 3, to delete enter 4, to quit enter 5" << endl;
         cin.getline(input,50);
-        if (strcmp(input, "ADD") == 0) {
+        if (strcmp(input, "1") == 0) {
             int id;
             float gpa;
             char* fName = new char();
@@ -241,83 +265,13 @@ int main() {
             }
         }
         //Random student generation
-        else if (strcmp(input, "GENERATE") == 0) {
-            /*
-            vector<char*> fNames;
-            vector<char*> lNames;
-            ifstream inFile;
-            char* temp;
-            char* temp2;
-            int number = 0;
-            char fileInput[1000];
-            char fileInput2[1000];
-            char fileName[100];
-            //Takes in filenames for first and last names
-            cout << "First File Name? \n";
-            cin.getline(fileName, 100);
-            inFile.open(fileName);
-            inFile.getline(fileInput, 1000);
-            temp = strtok(fileInput, " ");
-            while (temp != NULL) {
-                fNames.push_back(temp);
-                temp = strtok(NULL, " ");
-            }
-            inFile.close();
-            char fileName2[25];
-            cout << "Second File Name? \n";
-            cin.getline(fileName2, 100);
-            inFile.open(fileName2);
-            inFile.getline(fileInput2, 1000);
-            temp2 = strtok(fileInput2, " ");
-            while (temp2 != NULL) {
-                lNames.push_back(temp2);
-                temp2 = strtok(NULL, " ");
-            }
-            inFile.close();
-            //Students to be generated
-            cout << "How many students? \n";
-            cin >> number;
-            cin.get();
-            for (int a = 0; a < number; a++) {
-                char* firstName = new char();
-                char* lastName = new char();
-                int fIndex = 0;
-                int lIndex = 0;
-                float randGPA = 0;
-                fIndex = rand() % fNames.size()+1;
-                lIndex = rand() % lNames.size()+1;
-                if (fIndex == 0) {
-                    fIndex = 1;
-                }
-                firstName = fNames.at(fIndex - 1);
-                lastName = lNames.at(lIndex - 1);
-                randGPA = ((double) rand() / (RAND_MAX)) * 4;
-                int lID = 0;
-                for (vector<int>::iterator it = IDs.begin(); it != IDs.end(); ++it) {
-                    if((*it) > lID) {
-                        lID = (*it); 
-                    }
-                }
-                IDs.push_back(lID + 1);
-                Student* temp = new Student();
-                temp -> fName = firstName;
-                temp -> lName = lastName;
-                temp -> GPA = randGPA;
-                temp -> ID = lID + 1;
-                int index = HVALUE(lID+1, size);
-                bool valid = ADD(hashTable, index, temp);
-                if (valid == false) {
-                    Node** newHash = new Node*[size*2];
-                    REHASH(newHash, hashTable, size);
-                    hashTable = newHash; 
-                }
-            }
-             */
+        else if (strcmp(input, "2") == 0) {
+            void randomGen(table, IDs, size);
         }
-        else if (strcmp(input, "PRINT") == 0) {
+        else if (strcmp(input, "3") == 0) {
          print(table, size);
         }
-        else if (strcmp(input, "DELETE") == 0) {
+        else if (strcmp(input, "4") == 0) {
             
             int id;
             cout << "Enter the ID" << endl;
@@ -327,7 +281,7 @@ int main() {
             remove(table, size, id);
             
         }
-        else if (strcmp(input, "EXIT") == 0) {
+        else if (strcmp(input, "5") == 0) {
             run = false;
         }
         else {
