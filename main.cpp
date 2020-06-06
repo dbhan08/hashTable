@@ -127,21 +127,21 @@ void remove(node* hash[], int size, int id) {
     }
 
 
-void randomGen(node* table[], vector<int> &IDs, int &size) {
+void randomGen(node* table[], vector<int> IDs, int &size) {
     ifstream inFile;
     vector<char*> firstNames;
     vector<char*> lastNames;
     char* input = new char[10000];
     char firstInput[10000];
      char secondInput[10000];
-    char* temp;
-    char* temp2;
+    char* temp = new char();
+    char* temp2 = new char();
     
     int amount;
     cout << "How many students would you like to add?" << endl;
     cin >> amount;
     cin.get();
-    inFile.open(first);
+    inFile.open("first.txt");
     inFile.getline(firstInput, 1000);
     temp = strtok(firstInput, " ");
     
@@ -152,7 +152,7 @@ void randomGen(node* table[], vector<int> &IDs, int &size) {
     inFile.close();
     
     
-    inFile.open(last);
+    inFile.open("last.txt");
     inFile.getline(secondInput, 1000);
     temp2 = strtok(secondInput, " ");
     while (temp2 != NULL) {
@@ -160,16 +160,29 @@ void randomGen(node* table[], vector<int> &IDs, int &size) {
         temp2 = strtok(NULL, " ");
     }
     inFile.close();
-    
+  
     for(int i = 0; i < amount; i++) {
+        
         char* firstName = new char();
         char* lastName = new char();
         int fIndex = rand() % (firstNames.size()+1);
-        int lIndex = rand() % (firstNames.size() +1);
+        int lIndex = rand() % (lastNames.size() +1);
          float random = (((float) rand()) / (float) RAND_MAX)*4; // From https://stackoverflow.com/questions/5289613/generate-random-float-between-two-floats/5289624
+    
+        if(fIndex == 0) {
+            fIndex = 1;
+        }
         
-        firstName = firstNames.at(fIndex-1);
-        firstName = lastNames.at(lIndex-1);
+        if(lIndex == 0) {
+            lIndex = 1;
+        }
+         firstName = firstNames.at(fIndex-1);
+        
+        lastName = lastNames.at(lIndex-1);
+        
+      
+        
+      
         int id = 0;
         vector<int>::iterator j;
         for (j = IDs.begin(); j != IDs.end();j++) {
@@ -177,13 +190,13 @@ void randomGen(node* table[], vector<int> &IDs, int &size) {
                 id = (*j);
             }
         }
-        IDs.push_back(id + 2);
+        IDs.push_back(id + 1);
         student* stud = new student();
         stud->firstName = firstName;
         stud->lastName = lastName;
         stud->gpa = random;
-        stud->id = id+2;
-        int ind = val(id+2,size);
+        stud->id = id+1;
+        int ind = val(id+1,size);
         bool valid = add(table, id, stud);
         if (valid == false) {
             node** newHash = new node*[size*2];
@@ -266,7 +279,7 @@ int main() {
         }
         //Random student generation
         else if (strcmp(input, "2") == 0) {
-            void randomGen(table, IDs, size);
+            randomGen(table, IDs, size);
         }
         else if (strcmp(input, "3") == 0) {
          print(table, size);
