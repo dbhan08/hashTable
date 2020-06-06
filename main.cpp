@@ -1,3 +1,14 @@
+/*
+ 
+ Following program is a student list using a hash table. Also has a random student generator.
+ By:Deyvik Bhan
+ Date:06/01/20
+ 
+ 
+ */
+
+
+
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -10,7 +21,7 @@ using namespace std;
 
 
 
-
+// Struct for student
 
 struct student {
     char* firstName;
@@ -18,14 +29,14 @@ struct student {
     int id;
     float gpa;
 };
-
+// Struct for node which contains student, the index in the hash table, and its next node for chaining
 struct node {
     student* student;
     node* next;
     int index;
 };
 
-
+// Finds hash value
 int val(int id, int size) {
     int value = 0;
     while(id!= 0) {
@@ -38,6 +49,7 @@ int val(int id, int size) {
     return val;
 }
 
+// Following adds nodes into hash table
 
 bool add(node* table[], int hIndex, student* student) {
     
@@ -64,6 +76,8 @@ bool add(node* table[], int hIndex, student* student) {
     }
 }
 
+
+// When chain is greater then three rehashes the nodes
 void re(node* hash[], node* old[], int &size) {
     
     for (int i = 0; i < (size * 2); i++) {
@@ -86,6 +100,7 @@ void re(node* hash[], node* old[], int &size) {
     size = resize;
 }
 
+// Prints all the data
 void print(node* hash[], int size) {
     node* temp;
     for(int i = 0; i < size; i++) {
@@ -103,7 +118,7 @@ void print(node* hash[], int size) {
     
 }
 
-
+// Removes node from the hash table
 void remove(node* hash[], int size, int id) {
     int value = val(id,size);
     node* temp = hash[value];
@@ -126,7 +141,7 @@ void remove(node* hash[], int size, int id) {
     return;
     }
 
-
+// Generates a random gpa, random names, as well as a higher id
 void randomGen(node* table[], vector<int> IDs, int &size) {
     ifstream inFile;
     vector<char*> firstNames;
@@ -217,11 +232,11 @@ void randomGen(node* table[], vector<int> IDs, int &size) {
 
 
 int main() {
-    int size = 100;
+    int size = 100; // inital size of hash table
     char input[50];
-    node** table = new node*[100];
+    node** table = new node*[100]; // the array used for hash table
     vector <int> IDs;
-    
+    // initializes values in table
     for(int i = 0; i< 100; i++) {
         table[i] = NULL;
     }
@@ -266,6 +281,7 @@ int main() {
                 temp -> gpa = gpa;
                 int index = val(id, size);
                 bool valid = add(table, index, temp);
+                // If it needs to be rehashed
                 if (valid == false) {
                     node** newHash = new node*[size*2];
                     re(newHash, table, size);
@@ -282,10 +298,11 @@ int main() {
             randomGen(table, IDs, size);
         }
         else if (strcmp(input, "3") == 0) {
+            // Prints table
          print(table, size);
         }
         else if (strcmp(input, "4") == 0) {
-            
+            // Deletees student from table
             int id;
             cout << "Enter the ID" << endl;
             cin >> id;
