@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <cstdlib>
 #include <cmath>
-
+#include <fstream>
 using namespace std;
 
 
@@ -125,6 +125,56 @@ void remove(node* hash[], int size, int id) {
         }
     return;
     }
+
+
+void randomGen() {
+    vector<char*> firstNames;
+    vector<char*> lastNames;
+    char* input = new char[10000];
+    char firstInput[10000];
+     char secondInput[10000];
+    char* temp;
+    char* temp2;
+    ifstream file;
+    
+    int amount;
+    cout << "How many students would you like to add?" << endl;
+    cin >> amount;
+    cin.get();
+    infile.open(first);
+    inFile.getline(firstInput, 1000);
+    temp = strtok(firstInput, " ");
+    
+    while (temp != NULL) {
+        firstNames.push_back(temp);
+        temp = strtok(NULL, " ");
+    }
+    infile.close();
+    
+    
+    inFile.open(last);
+    inFile.getline(secondINput, 1000);
+    temp2 = strtok(secondInput, " ");
+    while (temp2 != NULL) {
+        lastNames.push_back(temp2);
+        temp2 = strtok(NULL, " ");
+    }
+    inFile.close();
+    
+    for(int i = 0; i < amount; i++) {
+        char* firstName = new char();
+        char* lastName = new char();
+        int fIndex = rand() % (firstNames.size()+1);
+        int lIndex = rand() % (firstNames.size() +1);
+        float randGPA = 0;
+        
+        firstName = firstNames.at(fINdex-1);
+        firstName = lasttNames.at(lINdex-1);
+        
+    }
+    
+    
+}
         
 
 
