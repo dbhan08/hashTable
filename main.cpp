@@ -104,6 +104,30 @@ void print(node* hash[], int size) {
 }
 
 
+void remove(node* hash[], int size, int id) {
+    int value = val(id,size);
+    node* temp = hash[value];
+    node* prev = NULL;
+    if(temp != NULL) {
+        while(temp != NULL) {
+            if(temp->student->id == id) {
+                if(prev == NULL) {
+                    hash[value] = temp->next;
+                } else {
+                    prev-> next = temp->next;
+                }
+                return;
+            }
+            prev = temp;
+            temp = temp->next;
+                
+            }
+        }
+    return;
+    }
+        
+
+
 
 
 int main() {
@@ -244,17 +268,17 @@ int main() {
          print(table, size);
         }
         else if (strcmp(input, "DELETE") == 0) {
-            /*
-            int sID;
-            cout << "Enter Student's ID \n";
-            cin >> sID;
+            
+            int id;
+            cout << "Enter the ID" << endl;
+            cin >> id;
             cin.get();
-            IDs.push_back(sID);
-            DELETE(hashTable, sID, size); 
-             */
+            IDs.push_back(id);
+            remove(table, size, id);
+            
         }
         else if (strcmp(input, "EXIT") == 0) {
-            exit(0); 
+            run = false;
         }
         else {
             cout << "Give a valid input";
